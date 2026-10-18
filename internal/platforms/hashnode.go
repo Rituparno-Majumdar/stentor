@@ -95,9 +95,9 @@ func (hashnode) Post(ctx context.Context, cfg *config.Store, c content.Content) 
 	}`
 	variables := map[string]any{
 		"input": map[string]any{
-			"title":         title,
+			"title":           title,
 			"contentMarkdown": body,
-			"publicationId": pubID,
+			"publicationId":   pubID,
 		},
 	}
 	var resp struct {

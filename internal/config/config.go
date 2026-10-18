@@ -12,8 +12,8 @@ import (
 // Store is the on-disk credential file: one map of key/value fields per
 // platform (e.g. linkedin -> {access_token, refresh_token, person_urn}).
 type Store struct {
-	path     string
-	Entries  map[string]map[string]string `json:"entries"`
+	path    string
+	Entries map[string]map[string]string `json:"entries"`
 }
 
 func dir() (string, error) {
@@ -31,7 +31,12 @@ func Load() (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
-	path := filepath.Join(d, "credentials.json")
+	return LoadFromPath(filepath.Join(d, "credentials.json"))
+}
+
+// LoadFromPath is Load with an explicit path, used directly by tests so
+// they never touch the real ~/.stentor.
+func LoadFromPath(path string) (*Store, error) {
 	s := &Store{path: path, Entries: map[string]map[string]string{}}
 
 	data, err := os.ReadFile(path)

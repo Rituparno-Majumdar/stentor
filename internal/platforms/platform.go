@@ -67,7 +67,12 @@ func All() []Platform {
 		NewLinkedIn(),
 		NewReddit(),
 		NewTwitter(),
-		// Tier 3 is appended here once built (see plan build order).
+		// Tier 3 -- self-serve app registration + platform-side review.
+		NewFacebook(),
+		NewInstagram(),
+		NewThreads(),
+		NewTikTok(),
+		NewYouTube(),
 	}
 }
 

@@ -95,8 +95,8 @@ func (linkedin) Post(ctx context.Context, cfg *config.Store, c content.Content) 
 	}
 
 	headers := map[string]string{
-		"Authorization":           "Bearer " + token,
-		"LinkedIn-Version":        linkedinAPIVersion,
+		"Authorization":             "Bearer " + token,
+		"LinkedIn-Version":          linkedinAPIVersion,
 		"X-Restli-Protocol-Version": "2.0.0",
 	}
 
@@ -106,13 +106,13 @@ func (linkedin) Post(ctx context.Context, cfg *config.Store, c content.Content) 
 	}
 
 	payload := map[string]any{
-		"author":      author,
-		"commentary":  commentary,
-		"visibility":  "PUBLIC",
+		"author":     author,
+		"commentary": commentary,
+		"visibility": "PUBLIC",
 		"distribution": map[string]any{
-			"feedDistribution":                "MAIN_FEED",
-			"targetEntities":                  []any{},
-			"thirdPartyDistributionChannels":  []any{},
+			"feedDistribution":               "MAIN_FEED",
+			"targetEntities":                 []any{},
+			"thirdPartyDistributionChannels": []any{},
 		},
 		"lifecycleState":            "PUBLISHED",
 		"isReshareDisabledByAuthor": false,
