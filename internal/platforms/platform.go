@@ -63,7 +63,11 @@ func All() []Platform {
 		NewHashnode(),
 		NewMastodon(),
 		NewTelegram(),
-		// Tier 2 and 3 are appended here as they're built (see plan build order).
+		// Tier 2 -- self-serve app registration.
+		NewLinkedIn(),
+		NewReddit(),
+		NewTwitter(),
+		// Tier 3 is appended here once built (see plan build order).
 	}
 }
 

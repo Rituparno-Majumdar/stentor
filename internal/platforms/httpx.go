@@ -68,6 +68,17 @@ func doJSON(ctx context.Context, method, rawURL string, headers map[string]strin
 	return nil
 }
 
+// doRequestJSON marshals payload and sends it, returning the raw response
+// body and status for callers that need to inspect headers/status
+// themselves rather than go through doJSON's 2xx-or-error shortcut.
+func doRequestJSON(ctx context.Context, method, rawURL string, headers map[string]string, payload any) ([]byte, int, error) {
+	b, err := json.Marshal(payload)
+	if err != nil {
+		return nil, 0, err
+	}
+	return doRequest(ctx, method, rawURL, headers, bytes.NewReader(b))
+}
+
 // doForm posts application/x-www-form-urlencoded data (several OAuth token
 // endpoints and the classic Reddit submit API require this, not JSON).
 func doForm(ctx context.Context, method, rawURL string, headers map[string]string, form url.Values, out any) error {
