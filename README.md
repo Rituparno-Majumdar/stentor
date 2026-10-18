@@ -1,12 +1,33 @@
 # Stentor
 
-One post, everywhere -- a free, single-binary CLI for crossposting to many social platforms at once. No database, no daemon, no Docker required: it runs, posts, exits.
+![Stentor — one pulse, read at every distance it reaches](docs/assets/stentor-cover.png)
+
+**One post, everywhere — a free, single-binary CLI for crossposting to many social platforms at once. No database, no daemon, no Docker required: it runs, posts, exits.**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go)](go.mod)
+[![Footprint](https://img.shields.io/badge/peak%20RSS-~6MB-brightgreen)](#why-this-exists)
+[![Platforms](https://img.shields.io/badge/platforms-14-informational)](#platform-support-and-who-gates-it)
+
+## Table of contents
+
+- [Why this exists](#why-this-exists)
+- [Why "Stentor"?](#why-stentor)
+- [Install](#install)
+- [Usage](#usage)
+- [Platform support and who gates it](#platform-support-and-who-gates-it)
+- [Architecture](#architecture)
+- [What this is not](#what-this-is-not)
 
 ## Why this exists
 
-The usual self-hosted answer to "post to several platforms at once" is [Postiz](https://github.com/gitroomhq/postiz-app) -- a genuinely capable tool, but its self-hosted stack bundles its own Postgres, its own Redis, a *second* separate Postgres for its Temporal workflow engine, and the Temporal server itself. On a small VPS (2 vCPU / 4GB, already running other things), that stack doesn't fit: pulling and extracting its images alone was enough to saturate swap and grind to a halt before a single container even started.
+The usual self-hosted answer to "post to several platforms at once" is [Postiz](https://github.com/gitroomhq/postiz-app) — a genuinely capable tool, but its self-hosted stack bundles its own Postgres, its own Redis, a *second* separate Postgres for its Temporal workflow engine, and the Temporal server itself. On a small VPS (2 vCPU / 4GB, already running other things), that stack doesn't fit: pulling and extracting its images alone was enough to saturate swap and grind to a halt before a single container even started.
 
-Stentor is the other end of that spectrum: one static Go binary, ~9MB, measured peak memory under 7MB for a real run. It does less than Postiz -- no scheduling UI, no analytics, no daemon -- on purpose. It posts, and exits.
+Stentor is the other end of that spectrum: one static Go binary, ~9MB on disk, **measured peak RSS under 7MB** for a real run — not estimated, measured with `/usr/bin/time -v` on the exact VPS that couldn't run Postiz. It does less than Postiz on purpose: no scheduling UI, no analytics, no daemon. It posts, and exits.
+
+## Why "Stentor"?
+
+In the *Iliad*, Stentor was a herald whose voice carried as loud as fifty men combined — the origin of the word "stentorian." One voice, amplified enough to reach every distance at once, with no infrastructure behind it beyond the voice itself. That's the entire design brief of this tool.
 
 ## Install
 
@@ -18,7 +39,7 @@ cd stentor
 go build -o stentor ./cmd/stentor
 ```
 
-A Dockerfile is included for convenience, but using it is never required -- the binary alone is the whole tool.
+A Dockerfile is included for convenience, but using it is never required — the binary alone is the whole tool.
 
 ## Usage
 
@@ -34,7 +55,7 @@ Credentials live in `~/.stentor/credentials.json`, mode `0600`. Nothing else is 
 
 ## Platform support and who gates it
 
-Every platform below is fully implemented in this tool. The "friction" column is about **you getting credentials approved by that platform** -- it is never about whether Stentor supports it.
+Every platform below is fully implemented in this tool. The "friction" column is about **you getting credentials approved by that platform** — it is never about whether Stentor supports it.
 
 | Platform | Friction | Notes |
 |---|---|---|
@@ -45,13 +66,13 @@ Every platform below is fully implemented in this tool. The "friction" column is
 | dev.to | None | An API key from your own account |
 | Hashnode | None | A personal access token |
 | LinkedIn | Self-serve | Your own app, linked to a Page you admin |
-| Reddit | **Currently blocked platform-side** | Reddit closed self-service app creation in late 2025; new apps need a manual "Responsible Builder Policy" review with no stated timeline. This tool's code works -- getting credentials is Reddit's process, not this tool's |
-| Twitter/X | Self-serve, uncertain pricing | As of 2026, free write access is unclear -- check the X developer portal before relying on it |
+| Reddit | **Currently blocked platform-side** | Reddit closed self-service app creation in late 2025; new apps need a manual "Responsible Builder Policy" review with no stated timeline. This tool's code works — getting credentials is Reddit's process, not this tool's |
+| Twitter/X | Self-serve, uncertain pricing | As of 2026, free write access is unclear — check the X developer portal before relying on it |
 | Facebook | Platform review | Meta App Review for `pages_manage_posts` |
-| Instagram | Platform review | Same Meta app as Facebook, plus a linked IG Business account. **Images must be a public URL, not a local file** -- the Graph API fetches them server-side |
+| Instagram | Platform review | Same Meta app as Facebook, plus a linked IG Business account. **Images must be a public URL, not a local file** — the Graph API fetches them server-side |
 | Threads | Platform review | Its own Meta app product, separate review |
-| TikTok | Platform review | No plain-text post type exists on TikTok at all -- posts always need `--image` (sent as a single-photo post with your text as caption) |
-| YouTube | Platform review, and still won't work | The YouTube Data API has **no endpoint for text/Community posts**, only video uploads -- `stentor post --platform youtube` will always fail. Included for completeness and because `stentor auth youtube` is still useful to have verified working |
+| TikTok | Platform review | No plain-text post type exists on TikTok at all — posts always need `--image` (sent as a single-photo post with your text as caption) |
+| YouTube | Platform review, and still won't work | The YouTube Data API has **no endpoint for text/Community posts**, only video uploads — `stentor post --platform youtube` will always fail. Included for completeness and because `stentor auth youtube` is still useful to have verified working |
 
 ## Architecture
 
@@ -68,12 +89,12 @@ type Platform interface {
 }
 ```
 
-Adding a platform means adding one file that implements this interface and registering it in `internal/platforms/platform.go`'s `All()` -- nothing else in the codebase needs to change.
+Adding a platform means adding one file that implements this interface and registering it in `internal/platforms/platform.go`'s `All()` — nothing else in the codebase needs to change.
 
 ## What this is not
 
-- Not a scheduler -- there's no "post later," only "post now."
-- Not a dashboard -- there's no UI, analytics, or history beyond your shell's own scrollback.
+- Not a scheduler — there's no "post later," only "post now."
+- Not a dashboard — there's no UI, analytics, or history beyond your shell's own scrollback.
 - Not a replacement for Postiz if you actually want scheduling, analytics, and team features and have the VPS headroom to run it. Stentor exists for the case where you don't.
 
 ## License
