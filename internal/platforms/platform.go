@@ -61,6 +61,7 @@ func All() []Platform {
 		NewDevto(),
 		NewDiscord(),
 		NewHashnode(),
+		NewLemmy(),
 		NewMastodon(),
 		NewTelegram(),
 		// Tier 2 -- self-serve app registration.

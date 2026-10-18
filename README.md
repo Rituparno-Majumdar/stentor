@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go)](go.mod)
 [![Footprint](https://img.shields.io/badge/peak%20RSS-~6MB-brightgreen)](#why-this-exists)
-[![Platforms](https://img.shields.io/badge/platforms-14-informational)](#platform-support-and-who-gates-it)
+[![Platforms](https://img.shields.io/badge/platforms-15-informational)](#platform-support-and-who-gates-it)
 
 ## Table of contents
 
@@ -65,6 +65,7 @@ Every platform below is fully implemented in this tool. The "friction" column is
 | Discord | None | A webhook on a channel you admin |
 | dev.to | None | An API key from your own account |
 | Hashnode | None | A personal access token |
+| Lemmy | None | Log in with your username/password on any instance you choose, no app or review of any kind |
 | LinkedIn | Self-serve | Your own app, linked to a Page you admin |
 | Reddit | **Currently blocked platform-side** | Reddit closed self-service app creation in late 2025; new apps need a manual "Responsible Builder Policy" review with no stated timeline. This tool's code works — getting credentials is Reddit's process, not this tool's |
 | Twitter/X | Self-serve, uncertain pricing | As of 2026, free write access is unclear — check the X developer portal before relying on it |
